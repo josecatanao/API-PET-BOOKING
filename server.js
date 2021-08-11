@@ -51,10 +51,15 @@ app.post("/usuario", function(req, res){
             })
 });
 
-app.put("/usuario/:id",function(req,res){
-    
+app.put('/usuario/:id', (req, res) => {
+    const usuario = getUser(req.params.id)
 
+    if (!usuario) return res.status(404).json({})
+
+    user.nome = req.body.nome
+    res.json(usuario)
 });
+
 app.delete('/usuario/:id', function (req, res) {
     usuario.remove({
         _id: { $in: req.params.id.split(',') }
@@ -69,6 +74,17 @@ app.delete('/usuario/:id', function (req, res) {
 
 //-----------------------------------------------------------
 
+app.delete('/agenda/:id', function (req, res) {
+    agenda.remove({
+        _id: { $in: req.params.id.split(',') }
+    }, function (err) {
+        if (err) return res.send(err);
+        usuario.find({}, function (err, dados) {
+            if (err) return res.send(err)
+                res.json("Removido da agenda com sucesso");
+        });
+    });
+});
 
 //Busca todos os agendamentos
 app.get("/agenda",function(req,res){
