@@ -52,11 +52,19 @@ app.post("/usuario", function(req, res){
 });
 
 app.put("/usuario/:id",function(req,res){
-    //const {id} = req.params
+    
 
 });
-app.delete("/usuario/:id",function(req,res){
-    //const {id} = req.params
+app.delete('/usuario/:id', function (req, res) {
+    usuario.remove({
+        _id: { $in: req.params.id.split(',') }
+    }, function (err) {
+        if (err) return res.send(err);
+        usuario.find({}, function (err, dados) {
+            if (err) return res.send(err)
+                res.json("Usuário removido com sucesso");
+        });
+    });
 });
 
 //-----------------------------------------------------------
