@@ -11,6 +11,7 @@ mongoose.connect("mongodb://localhost/petShop",{
     console.log("Houve um erro ao se conectar ao mongoDB "+err);
 })
 
+//cria o Shema do usuario
 const UsuarioShema = mongoose.Schema({
     email: {
         type: String
@@ -27,6 +28,7 @@ const UsuarioShema = mongoose.Schema({
 }) 
 
 
+//cria o Shema da agenda
 const AgendaShema = mongoose.Schema({
     data:{
         type:Date
@@ -34,17 +36,26 @@ const AgendaShema = mongoose.Schema({
     tipoAtendimento: {
         type:String
     },
-    descrição: {
+    descricao: {
         type:String
     }
 }) 
 mongoose.model('usuario', UsuarioShema);
+mongoose.model('agenda', AgendaShema);
 
 
 
-//serve para criaar o model
+//----------------------
+//Para rodar o codigo perfeitamente é necessario essas funções abaixo,
+// qualquer dúvida na documentação do mongoose dá uma boa base. 
+//---------------------
+
+
+//serve para criar o model
 
 //const novoUsuario = mongoose.model('usuario');
+//const novaAgenda = mongoose.model('agenda');
+
 /*
 new novoUsuario({
     email: "josecatanoneto@gmail.com",
@@ -58,5 +69,18 @@ new novoUsuario({
     })
 
 */
+/*
+new novaAgenda({
+    data: "2021-08-10",
+    tipoAtendimento:"Castrar",
+    descricao:"Preciso castrar meu cachorro"
+    }).save().then(()=>{
+        console.log("agenda cadastrado com sucesso!")
+    }).catch((err)=>{
+    console.log("houve um erro ao registrar da agenda :"+ err)
+ })
+ */
+
 
 module.exports = mongoose.model('usuario', UsuarioShema);
+module.exports = mongoose.model('agenda', AgendaShema);
