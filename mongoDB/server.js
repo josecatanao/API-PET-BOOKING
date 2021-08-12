@@ -3,46 +3,14 @@ const mongoose = require("mongoose");
 //configurando o mongoose
 mongoose.Promise = global.Promise;
 // coloque o nome do banco aqui localhost/{nomedobanco}
-mongoose.connect("mongodb://172.27.0.2/petShop",{
+
+const conectarOMongo = mongoose.connect("mongodb://172.18.0.2/petShop",{
     useMongoClient:true
 }).then(()=>{
     console.log("mongoDB conectado...")
 }).catch((err)=>{
     console.log("Houve um erro ao se conectar ao mongoDB "+err);
 })
-
-//cria o Shema do usuario
-const UsuarioShema = mongoose.Schema({
-    email: {
-        type: String
-    },
-    nome: {
-        type: String
-    },
-    sobrenome:{
-        type: String
-    }, 
-    tipoUsuario: {
-        type: String
-    }
-}) 
-
-
-//cria o Shema da agenda
-const AgendaShema = mongoose.Schema({
-    data:{
-        type:Date
-    },
-    tipoAtendimento: {
-        type:String
-    },
-    descricao: {
-        type:String
-    }
-}) 
-mongoose.model('usuario', UsuarioShema);
-mongoose.model('agenda', AgendaShema);
-
 
 
 //----------------------
@@ -81,6 +49,4 @@ new novaAgenda({
  })
  */
 
-
-module.exports = mongoose.model('usuario', UsuarioShema);
-module.exports = mongoose.model('agenda', AgendaShema);
+module.exports = {conectarOMongo};
