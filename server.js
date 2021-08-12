@@ -51,15 +51,16 @@ app.post("/usuario", function(req, res){
             })
 });
 
+//Update de um usuario
 app.put('/usuario/:id', (req, res) => {
-    const usuario = getUser(req.params.id)
-
-    if (!usuario) return res.status(404).json({})
-
-    user.nome = req.body.nome
-    res.json(usuario)
+    usuario.findOneAndUpdate({ email: req.body.email, nome: req.body.nome, sobrenome: req.body.sobrenome, tipoUsuario: req.body.tipoUsuario })
+        .then(result => {
+            res.json('Success')
+        })
+        .catch(error => console.error(error))
 });
 
+//Deleta um usuario
 app.delete('/usuario/:id', function (req, res) {
     usuario.remove({
         _id: { $in: req.params.id.split(',') }
@@ -73,7 +74,7 @@ app.delete('/usuario/:id', function (req, res) {
 });
 
 //-----------------------------------------------------------
-
+//Deleta um atendimento
 app.delete('/agenda/:id', function (req, res) {
     agenda.remove({
         _id: { $in: req.params.id.split(',') }
@@ -84,6 +85,15 @@ app.delete('/agenda/:id', function (req, res) {
                 res.json("Removido da agenda com sucesso");
         });
     });
+});
+
+//Update de um atendimento
+app.put('/agenda/:id', (req, res) => {
+    agenda.findOneAndUpdate({ _id: req.body._id, data: req.body.data, tipoAtendimento: req.body.tipoAtendimento, descricao: req.body.descricao})
+        .then(result => {
+            res.json('Success')
+        })
+        .catch(error => console.error(error))
 });
 
 //Busca todos os agendamentos
