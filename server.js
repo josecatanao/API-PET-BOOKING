@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 
 //linkando com o mongo
-const {conectarOMongo} = require("./mongoDB/server");
+const {conectarOMongo} = require("./src/mongoDB/server");
 
 // linkando com os controllers
-const ctrlUsuario = require("./controllers/usuario");
-const ctrlAgenda = require("./controllers/agenda");
+const ctrlUsuario = require("./src/controllers/usuario");
+const ctrlAgenda = require("./src/controllers/agenda");
 
 app.use(express.json());
 
