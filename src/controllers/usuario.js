@@ -1,5 +1,15 @@
 // linkando com os models
 const {usuario} = require("../models/usuario");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const auth = require('../config/auth.json');
+
+function generateToken(params =  {} ){
+    return jwt.sign(params, auth.secret, {
+        expiresIn: 86400,
+    });
+}
 
 function listarUsuarios(req,res){
 
@@ -21,18 +31,41 @@ function buscarUsuario(req,res){
 }
 
 function addUsuario(req, res){
-    const {email,nome,sobrenome,tipoUsuario} = req.body;
+    const {email,password,nome,sobrenome,tipoUsuario} = req.body;
     new usuario({
                email,
+               password,
                nome,
                sobrenome,
                tipoUsuario
             }).save().then(()=>{
-                    res.json({Mensagem:"usuario cadastrado com sucesso!"})
+                    res.json({Mensagem:"usuario cadastrado com sucesso!",
+                    token: generateToken({id: usuario.id })
+                })
             }).catch((err)=>{
                     res.json({Mensagem:"houve um erro ao registrar usuario "})
             })
 }
+
+//autenticação de usuario
+ async function autenticar (req, res) {
+    const { email, password} = req.body;
+
+    const user = await usuario.findOne({email}).select('+password');
+
+    if(!user)
+        return res.status(400).send({error: 'User not found'});
+
+    if(!await bcrypt.compare(password, user.password))
+        return res.status(400).send({ error: 'invalid password'});
+    
+    user.password = undefined;
+
+    
+    res.send({ user, token: generateToken({id: user.id}),
+    });
+};
+
 
 updateUsuario = (req, res) => {
     usuario.findOneAndUpdate({ email: req.body.email, nome: req.body.nome, sobrenome: req.body.sobrenome, tipoUsuario: req.body.tipoUsuario })
@@ -54,4 +87,4 @@ function deleteUsuario(req, res) {
     });
 }
 
-module.exports = {listarUsuarios, buscarUsuario, addUsuario, updateUsuario, deleteUsuario};
+module.exports = {listarUsuarios, buscarUsuario, addUsuario, autenticar, updateUsuario, deleteUsuario};

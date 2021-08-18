@@ -2,15 +2,15 @@ const express = require('express');
 const app = express();
 
 //linkando com o mongo
-const {conectarOMongo} = require("./mongoDB/server");
+const {conectarOMongo} = require("./src/mongoDB/server");
 
 // linkando com os controllers
-const ctrlUsuario = require("./controllers/usuario");
-const ctrlAgenda = require("./controllers/agenda");
+const ctrlUsuario = require("./src/controllers/usuario");
+const ctrlAgenda = require("./src/controllers/agenda");
 
 app.use(express.json());
 
-
+const authMiddleware = require('./src/middleware/auth');
 
 //Busca todos os usuarios
 app.get("/usuario",ctrlUsuario.listarUsuarios);
@@ -21,6 +21,9 @@ app.get("/usuario/:id",ctrlUsuario.buscarUsuario);
 //adiciona um usuario
 app.post("/usuario", ctrlUsuario.addUsuario);
 
+//autenticar usuario
+app.post("/usuario/authenticate", ctrlUsuario.autenticar);
+
 //Update de um usuario
 app.put('/usuario/:id', ctrlUsuario.updateUsuario);
 
@@ -29,19 +32,19 @@ app.delete('/usuario/:id', ctrlUsuario.deleteUsuario);
 
 //-----------------------------------------------------------
 //Deleta um atendimento
-app.delete('/agenda/:id', ctrlAgenda.deletarAgenda);
+app.delete('/agenda/:id',authMiddleware, ctrlAgenda.deletarAgenda);
 
 //Update de um atendimento
-app.put('/agenda/:id', ctrlAgenda.updateAgenda);
+app.put('/agenda/:id', authMiddleware, ctrlAgenda.updateAgenda);
 
 //Busca todos os agendamentos
-app.get("/agenda",ctrlAgenda.listarAgendamentos);
+app.get("/agenda",authMiddleware, ctrlAgenda.listarAgendamentos);
 
 //Busca o agendamento pelo id
-app.get("/agenda/:id",ctrlAgenda.buscarAgendamento);
+app.get("/agenda/:id",authMiddleware,ctrlAgenda.buscarAgendamento);
 
 //adiciona um agendamento
-app.post("/agenda", ctrlAgenda.addAgendamento);
+app.post("/agenda",authMiddleware, ctrlAgenda.addAgendamento);
 
 // testando conexão com o mongo
 conectarOMongo;

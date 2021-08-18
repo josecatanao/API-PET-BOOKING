@@ -1,6 +1,8 @@
 // linkando com os models
 const {agenda} = require("../models/agenda");
 
+
+
 function deletarAgenda(req, res) {
     agenda.remove({
         _id: { $in: req.params.id.split(',') }
