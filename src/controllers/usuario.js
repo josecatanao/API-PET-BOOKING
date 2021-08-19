@@ -32,13 +32,20 @@ function buscarUsuario(req,res){
 
 function addUsuario(req, res){
     const {email,password,nome,sobrenome,tipoUsuario} = req.body;
-    new usuario({
+    // adicionadas Imagens
+    const reqImages = req.files;
+    const caminhos = reqImages.map(image => ({
+        path: image.filename,
+    }));
+    const usuarioComImagem = {
                email,
                password,
                nome,
                sobrenome,
-               tipoUsuario
-            }).save().then(()=>{
+               tipoUsuario,
+               caminhos,
+            };
+    new usuario(usuarioComImagem).save().then(()=>{
                     res.json({Mensagem:"usuario cadastrado com sucesso!",
                     token: generateToken({id: usuario.id })
                 })

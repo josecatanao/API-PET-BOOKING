@@ -1,6 +1,7 @@
 // linkando com o mongoose
 const mongoose = require("mongoose");
 const bcrypt = require('bcryptjs');
+const {Schema} = require("mongoose");
 
 
 //cria o Shema do usuario
@@ -21,7 +22,13 @@ const UsuarioShema = mongoose.Schema({
     },
     tipoUsuario: {
         type: String
-    }
+    },
+    caminhos: [
+        {
+            type: Schema.Types.ObjectId, 
+            ref: 'imagem'
+        }
+    ]
 }) 
 
 UsuarioShema.pre('save', async function(next){
