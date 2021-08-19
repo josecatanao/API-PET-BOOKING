@@ -7,6 +7,7 @@ const {conectarOMongo} = require("./src/mongoDB/server");
 // linkando com os controllers
 const ctrlUsuario = require("./src/controllers/usuario");
 const ctrlAgenda = require("./src/controllers/agenda");
+const crtlLocalizacao = require('./src/controllers/localizacaoController');
 
 app.use(express.json());
 
@@ -45,6 +46,9 @@ app.get("/agenda/:id",authMiddleware,ctrlAgenda.buscarAgendamento);
 
 //adiciona um agendamento
 app.post("/agenda",authMiddleware, ctrlAgenda.addAgendamento);
+
+//adicionar localização
+app.post('/localizacao', crtlLocalizacao.addLocalizacao);
 
 // testando conexão com o mongo
 conectarOMongo;
