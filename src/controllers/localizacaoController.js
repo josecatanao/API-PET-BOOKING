@@ -12,4 +12,24 @@ function addLocalizacao(req, res){
             })
 }
 
-module.exports = { addLocalizacao };
+function listarLocalizacao (req, res) {
+        localizacao.find({}).then((dados)=>{
+                res.json(dados); 
+             });
+
+}
+
+
+function buscarPetShop(req, res){
+        const {nome} = req.params.nome;
+
+        localizacao.find(nome, (err, dados) => {
+                if(err == null){
+                        res.json(dados);
+                } else {
+                        res.json({alerta: 'Não foi encontrado localização com essa descrição'})
+                }
+        });          
+}
+
+module.exports = { addLocalizacao, listarLocalizacao, buscarPetShop };

@@ -58,6 +58,12 @@ app.post("/agenda",authMiddleware, ctrlAgenda.addAgendamento);
 //adicionar localização
 app.post('/localizacao', crtlLocalizacao.addLocalizacao);
 
+//listar localização
+app.get('/localizacao', crtlLocalizacao.listarLocalizacao);
+
+//buscar petShop
+app.get('/localizacao/:nome', crtlLocalizacao.buscarPetShop);
+
 // testando conexão com o mongo
 conectarOMongo;
 
