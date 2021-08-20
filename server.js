@@ -28,7 +28,7 @@ app.get("/usuario",ctrlUsuario.listarUsuarios);
 app.get("/usuario/:id",ctrlUsuario.buscarUsuario);
 
 //adiciona um usuario
-app.post("/usuario", upload.array('images'), ctrlUsuario.addUsuario);
+app.post("/usuario", upload.single('imgPerfil'), ctrlUsuario.addUsuario);
 
 //autenticar usuario
 app.post("/usuario/authenticate", ctrlUsuario.autenticar);

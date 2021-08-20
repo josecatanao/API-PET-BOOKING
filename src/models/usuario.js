@@ -23,12 +23,10 @@ const UsuarioShema = mongoose.Schema({
     tipoUsuario: {
         type: String
     },
-    caminhos: [
-        {
-            type: Schema.Types.ObjectId, 
+    imagem: {
+            type: Schema.Types.ObjectId,
             ref: 'imagem'
-        }
-    ]
+    },
 }) 
 
 UsuarioShema.pre('save', async function(next){

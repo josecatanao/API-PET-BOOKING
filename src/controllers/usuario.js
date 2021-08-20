@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const auth = require('../config/auth.json');
+const { imagem } = require("../models/Imagem");
 
 function generateToken(params =  {} ){
     return jwt.sign(params, auth.secret, {
@@ -33,22 +34,29 @@ function buscarUsuario(req,res){
 function addUsuario(req, res){
     const {email,password,nome,sobrenome,tipoUsuario} = req.body;
     // adicionadas Imagens
-    const reqImages = req.files;
-    const caminhos = reqImages.map(image => ({
-        path: image.filename,
-    }));
-    const usuarioComImagem = {
+    
+    
+    const novoUsuario = {
                email,
                password,
                nome,
                sobrenome,
                tipoUsuario,
-               caminhos,
             };
-    new usuario(usuarioComImagem).save().then(()=>{
-                    res.json({Mensagem:"usuario cadastrado com sucesso!",
-                    token: generateToken({id: usuario.id })
-                })
+    novoUsuarioModel = new usuario(novoUsuario);
+
+    let img = new imagem({
+        caminho: req.file.filename,
+        usuario: novoUsuario.id,
+    });
+    img.save();
+
+    novoUsuarioModel.save().then(()=>{
+                    novoUsuario.imagem = img.id;
+                    res.json({
+                                Mensagem:"usuario cadastrado com sucesso!",
+                                token: generateToken({id: novoUsuario.id }),
+                });
             }).catch((err)=>{
                     res.json({Mensagem:"houve um erro ao registrar usuario "})
             })
