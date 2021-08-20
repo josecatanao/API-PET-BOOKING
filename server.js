@@ -13,6 +13,14 @@ app.use(express.json());
 
 const authMiddleware = require('./src/middleware/auth');
 
+// linkando com uploads
+import multer from "multer";
+
+import uploadConfig from './config/upload';
+
+const upload = multer(uploadConfig);
+
+
 //Busca todos os usuarios
 app.get("/usuario",ctrlUsuario.listarUsuarios);
 
@@ -20,7 +28,7 @@ app.get("/usuario",ctrlUsuario.listarUsuarios);
 app.get("/usuario/:id",ctrlUsuario.buscarUsuario);
 
 //adiciona um usuario
-app.post("/usuario", ctrlUsuario.addUsuario);
+app.post("/usuario", upload.array('images'), ctrlUsuario.addUsuario);
 
 //autenticar usuario
 app.post("/usuario/authenticate", ctrlUsuario.autenticar);
@@ -54,6 +62,6 @@ app.post('/localizacao', crtlLocalizacao.addLocalizacao);
 conectarOMongo;
 
 
-app.listen(3000, function(){
+app.listen(9000, function(){
     console.log("Server inicializado")
 })
