@@ -47,15 +47,16 @@ function addUsuario(req, res){
 
     let img = new imagem({
         caminho: req.file.filename,
-        usuario: novoUsuario.id,
+        usuario: novoUsuarioModel.id,
     });
     img.save();
 
+    novoUsuarioModel.imagem = img.id;
+
     novoUsuarioModel.save().then(()=>{
-                    novoUsuario.imagem = img.id;
                     res.json({
                                 Mensagem:"usuario cadastrado com sucesso!",
-                                token: generateToken({id: novoUsuario.id }),
+                                token: generateToken({id: novoUsuarioModel.id }),
                 });
             }).catch((err)=>{
                     res.json({Mensagem:"houve um erro ao registrar usuario "})
