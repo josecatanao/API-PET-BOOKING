@@ -1,7 +1,7 @@
-import multer from "multer";
-import {join} from "path";
+const multer = require("multer");
+const {join} = require("path");
 
-export default {
+module.exports = {
   storage: multer.diskStorage({
     destination: join(__dirname, "..", "..", "uploads"),
     filename: (request, file, callback) => {

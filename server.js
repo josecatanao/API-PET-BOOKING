@@ -14,9 +14,9 @@ app.use(express.json());
 const authMiddleware = require('./src/middleware/auth');
 
 // linkando com uploads
-import multer from "multer";
+const multer = require("multer");
 
-import uploadConfig from './config/upload';
+const uploadConfig = require('./src/config/upload.js');
 
 const upload = multer(uploadConfig);
 
@@ -62,6 +62,6 @@ app.post('/localizacao', crtlLocalizacao.addLocalizacao);
 conectarOMongo;
 
 
-app.listen(9000, function(){
+app.listen(3000, function(){
     console.log("Server inicializado")
 })

@@ -4,9 +4,7 @@ const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 // coloque o nome do banco aqui localhost/{nomedobanco}
 
-const conectarOMongo = mongoose.connect("mongodb://localhost:27017/petShop",{
-    useMongoClient:true
-}).then(()=>{
+const conectarOMongo = mongoose.connect("mongodb://172.18.0.2/petShop", {useUnifiedTopology: true, serverSelectionTimeoutMS: 90000,}).then(()=>{
     console.log("mongoDB conectado...")
 }).catch((err)=>{
     console.log("Houve um erro ao se conectar ao mongoDB "+err);

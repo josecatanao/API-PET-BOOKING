@@ -1,4 +1,5 @@
 node_modules/
+uploads/
 npm-debug.*
 *.jks
 *.p8
